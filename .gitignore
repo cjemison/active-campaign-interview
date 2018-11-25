@@ -4,4 +4,4 @@
 .idea
 **/*.iml
 **/*.log
-.pytest_cache
+**/.pytest_cache

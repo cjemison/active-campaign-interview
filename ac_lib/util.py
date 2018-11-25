@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import json
 import logging
+import urllib
+import urllib2
 
 import requests
 
@@ -51,3 +53,15 @@ def post(url, body="", token=""):
 def validate_str(val="", message=""):
     if not val or val.strip() == "":
         raise ValueError(message)
+
+
+def post_campaign(post_data, url, token=""):
+    request_url = '%s/admin/api.php?&api_action=campaign_create&api_output=%s&api_key=%s' % (url,
+                                                                                             "json",
+                                                                                             token,)
+    logger.debug("request_url: %s" % (request_url,))
+    post_data = urllib.urlencode(post_data)
+    req = urllib2.Request(request_url, post_data)
+    response = json.loads(urllib2.urlopen(req).read())
+    logger.debug("Response: %s" % (response,))
+    return response

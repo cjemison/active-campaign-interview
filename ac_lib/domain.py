@@ -31,7 +31,8 @@ class List:
         return self._sender_reminder
 
     def to_str(self):
-        return "List(id=%s name=%s, stringid=%s. sender_url=%s, sender_reminder=%s" % \
+        return "List(id=%s name=%s, stringid=%s. sender_url=%s," \
+               " sender_reminder=%s" % \
                (self._id, self._name, self._stringid,
                 self._sender_url, self._sender_reminder)
 
@@ -92,20 +93,135 @@ class ContactList:
         return self._status
 
     def to_str(self):
-        return "ContactList(id=%s, list=%s, contact=%s, status=%s)" % \
+        return "ContactList(id=%s, list=%s, contact=%s, " \
+               "status=%s)" % \
                (self._id, self._list, self._contact, self._status)
 
     def __repr__(self):
         return self.to_str()
 
 
-if __name__ == "__main__":
-    a = Contact(first_name="John",
-                last_name="Smith",
-                email="john.smith@yahoo.com")
-    print "Customer: %s" % (a,)
+class Message:
+    def __init__(self, id="",
+                 message="",
+                 from_name="",
+                 from_email="",
+                 reply2="",
+                 subject="",
+                 preheader_text=""):
+        self._id = id
+        self._message = message
+        self._from_name = from_name
+        self._from_email = from_email
+        self._reply2 = reply2
+        self._subject = subject
+        self._preheader_text = preheader_text
 
-    a = List(name="testList",
-             stringid="This is a string id.",
-             sender_url="http://www.google.com",
-             sender_reminder="This is a remeinder text")
+    def get_id(self):
+        return self._id
+
+    def get_message(self):
+        return self._message
+
+    def get_from_name(self):
+        return self._from_name
+
+    def get_from_email(self):
+        return self._from_email
+
+    def get_reply2(self):
+        return self._reply2
+
+    def get_subject(self):
+        return self._subject
+
+    def get_preheader_text(self):
+        return self._preheader_text
+
+    def to_str(self):
+        return "Message(id=%s, message=%s," \
+               " from_name=%s, from_email=%s, subject=%s, reply=%s," \
+               " preheader_text=%s)" % \
+               (self._id,
+                self._message,
+                self._from_name,
+                self._from_email,
+                self._subject,
+                self._reply2,
+                self._preheader_text)
+
+    def __repr__(self):
+        return self.to_str()
+
+
+class Campaign:
+    def __init__(self, id="",
+                 type="",
+                 name="",
+                 schedule_date="",
+                 status="1",
+                 public="1",
+                 track_links="None",
+                 p_id="",
+                 message_id=""):
+        self._id = id
+        self._type = type
+        self._name = name
+        self._schedule_date = schedule_date
+        self._status = status
+        self._public = public
+        self._track_links = track_links
+        self._p_id = p_id
+        self._message_id = message_id
+
+    def get_id(self):
+        return self._id
+
+    def get_type(self):
+        return self._type
+
+    def get_name(self):
+        return self._name
+
+    def get_schedule_date(self):
+        return self._schedule_date
+
+    def get_public(self):
+        return self._public
+
+    def get_track_links(self):
+        return self._track_links
+
+    def get_p_id(self):
+        return self._p_id
+
+    def get_m_id(self):
+        return self._m_id
+
+    def to_dict(self):
+        d = dict()
+        d['name'] = self._name
+        d['type'] = self._type
+        d['sdate'] = self._schedule_date
+        d['status'] = self._status
+        d['public'] = self._public
+        d['tracklinks'] = self._track_links
+        d['p[1]'] = self._p_id
+        d['m[1]'] = self._message_id
+        return d
+
+    def to_str(self):
+        return "Campaign(id=%s, type=%s," \
+               " name=%s, schedule_date=%s, public=%s, track_links=%s," \
+               " list_id=%s, message_id=%s)" % \
+               (self._id,
+                self._type,
+                self._name,
+                self._schedule_date,
+                self._public,
+                self._track_links,
+                self._p_id,
+                self._message_id)
+
+    def __repr__(self):
+        return self.to_str()

@@ -9,5 +9,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 # included for mac sierra
-# codesign -dvvvv .venv/bin/python
 # codesign -f -s - .venv/bin/python
+
+# codesign -dvvvv .venv/bin/python

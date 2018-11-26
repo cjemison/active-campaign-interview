@@ -130,9 +130,10 @@ def to_message_json(m):
 def post_list(l, url, api_token):
     logger.debug("list: %s url: %s" % (l, url,))
     if l and url and api_token:
-        return util.post(url,
-                         l,
-                         api_token)
+        d = json.loads(util.post(url, to_list_json(l), api_token))
+        return List(id=d['list']['id'],
+                    name=d['list']['name'],
+                    stringid=d['list']['stringid'])
     return dict()
 
 
@@ -148,9 +149,13 @@ def post_contact_list(cl, url, api_token):
 def post_contact(contact, url, api_token):
     logger.debug("contact: %s url: %s", (contact, url,))
     if contact and url and api_token:
-        return util.post(url,
-                         to_contact_json(validate_contact(contact)),
-                         api_token)
+        d = json.loads(util.post(url,
+                                 to_contact_json(validate_contact(contact)),
+                                 api_token))
+        return Contact(id=d['contact']['id'],
+                       first_name=d['contact']['firstName'],
+                       last_name=d['contact']['lastName'],
+                       email=d['contact']['email'])
     return dict()
 
 
@@ -164,6 +169,7 @@ def post_message(message, url, api_token):
 
 
 def validate_contact(contact):
+    logger.debug("contact: %s" % (contact,))
     if not contact:
         raise ValueError("Contact is null.")
     util.validate_str(contact.get_first_name(), "First name is null or blank.")
@@ -200,10 +206,10 @@ def get_api_token():
 
 
 def get_config():
-    basepath = os.path.dirname(__file__)
-    filepath = os.path.abspath(os.path.join(basepath, "..", "config.ini"))
+    base_path = os.path.dirname(__file__)
+    file_path = os.path.abspath(os.path.join(base_path, "..", "config.ini"))
     config = configparser.ConfigParser()
-    config.read(filepath, encoding='utf-8')
+    config.read(file_path, encoding='utf-8')
     return config
 
 

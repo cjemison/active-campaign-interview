@@ -163,7 +163,7 @@ class Campaign:
                  public="1",
                  track_links="None",
                  p_id="",
-                 message_id=""):
+                 m_id=""):
         self._id = id
         self._type = type
         self._name = name
@@ -172,7 +172,7 @@ class Campaign:
         self._public = public
         self._track_links = track_links
         self._p_id = p_id
-        self._message_id = message_id
+        self._m_id = m_id
 
     def get_id(self):
         return self._id
@@ -182,6 +182,9 @@ class Campaign:
 
     def get_name(self):
         return self._name
+
+    def get_status(self):
+        return self._status
 
     def get_schedule_date(self):
         return self._schedule_date

@@ -10,7 +10,7 @@ import keyring
 from validate_email import validate_email
 
 import util
-from domain import Campaign, Contact, List, Message
+from domain import Campaign, Contact, ContactList, List, Message
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +29,19 @@ def get_contacts(url, api_token):
                              last_name=contact['lastName'],
                              email=contact['email']))
 
+    return l
+
+
+def get_contact_list(url, api_token):
+    logger.debug("url: %s", (url,))
+    l = list()
+    if url and api_token:
+        d = json.loads(util.get(url, api_token))
+        for contact in d['contactLists']:
+            l.append(ContactList(id=contact['id'],
+                                 list=contact['list'],
+                                 contact=contact['contact'],
+                                 status=contact['status']))
     return l
 
 
@@ -103,12 +116,12 @@ def to_list_json(l):
     return json.dumps(d)
 
 
-def to_contact_list_json(cl):
+def to_contact_list_json(contact_list):
     d = {
         "contactList": {
-            "list": int(cl.get_list()),
-            "contact": int(cl.get_contact()),
-            "status": int(cl.get_status())
+            "list": int(contact_list.get_list()),
+            "contact": int(contact_list.get_contact()),
+            "status": int(contact_list.get_status())
         }
     }
     return json.dumps(d)
@@ -140,9 +153,13 @@ def post_list(l, url, api_token):
 def post_contact_list(cl, url, api_token):
     logger.debug("Contact List: %s url: %s" % (cl, url,))
     if cl and url and api_token:
-        return util.post(url,
-                         to_contact_list_json(cl),
-                         api_token)
+        d = json.loads(util.post(url,
+                                 to_contact_list_json(cl),
+                                 api_token))
+        return ContactList(id=d['contactList']['id'],
+                           list=d['contactList']['list'],
+                           contact=d['contactList']['contact'])
+
     return dict()
 
 

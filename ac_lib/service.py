@@ -128,6 +128,7 @@ def to_contact_list_json(contact_list):
 
 
 def to_message_json(m):
+    logger.debug("message: %s" % (m,))
     d = {
         "message": {
             "fromname": m.get_from_name(),
@@ -158,7 +159,8 @@ def post_contact_list(cl, url, api_token):
                                  api_token))
         return ContactList(id=d['contactList']['id'],
                            list=d['contactList']['list'],
-                           contact=d['contactList']['contact'])
+                           contact=d['contactList']['contact'],
+                           status=d['contactList']['status'])
 
     return dict()
 
@@ -179,9 +181,15 @@ def post_contact(contact, url, api_token):
 def post_message(message, url, api_token):
     logger.debug("message: %s url: %s" % (message, url,))
     if message and url and api_token:
-        return util.post(url,
-                         to_message_json(validate_message(message)),
-                         api_token)
+        d = json.loads(util.post(url,
+                                 to_message_json(message),
+                                 api_token))
+        return Message(id=d['message']['id'],
+                       from_name=d['message']['fromname'],
+                       from_email=d['message']['fromemail'],
+                       reply2=d['message']['reply2'],
+                       subject=d['message']['subject'],
+                       preheader_text=d['message']['preheader_text'])
     return dict()
 
 
@@ -209,7 +217,8 @@ def validate_message(m):
     logger.debug("Message: %s" % (m,))
     if not m:
         raise ValueError("Message null.")
-    util.validate_str(m.get_from_email, "Message.from_email")
+    util.validate_str(m.get_from_name(), "Message.from_name")
+    util.validate_str(m.get_from_email(), "Message.from_email")
     return m
 
 

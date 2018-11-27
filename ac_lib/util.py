@@ -65,3 +65,15 @@ def post_campaign(post_data, url, token=""):
     response = json.loads(urllib2.urlopen(req).read())
     logger.debug("Response: %s" % (response,))
     return response
+
+
+def post_contact_list(post_data, url, token=""):
+    request_url = '%s/admin/api.php?&api_action=campaign_create&api_output=%s&api_key=%s' % (url,
+                                                                                             "json",
+                                                                                             token,)
+    logger.debug("request_url: %s" % (request_url,))
+    post_data = urllib.urlencode(post_data)
+    req = urllib2.Request(request_url, post_data)
+    response = json.loads(urllib2.urlopen(req).read())
+    logger.debug("Response: %s" % (response,))
+    return response

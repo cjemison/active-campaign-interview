@@ -209,8 +209,8 @@ class Campaign:
         d['status'] = self._status
         d['public'] = self._public
         d['tracklinks'] = self._track_links
-        d['p[1]'] = self._p_id
-        d['m[1]'] = self._message_id
+        # d['p[1]'] = self._p_id
+        # d['m[1]'] = self._m_id
         return d
 
     def to_str(self):
@@ -224,7 +224,7 @@ class Campaign:
                 self._public,
                 self._track_links,
                 self._p_id,
-                self._message_id)
+                self._m_id)
 
     def __repr__(self):
         return self.to_str()

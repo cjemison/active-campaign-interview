@@ -11,7 +11,7 @@ Virtualenv is required.
 codesign -f -s - .venv/bin/python
 python -m keyring set active_campaign token
 
-# Verify Tokem
+# Verify Token
 python -m keyring get active_campaign token
 
 ```
